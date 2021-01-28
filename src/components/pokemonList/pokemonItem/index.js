@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, CardMedia, CardContent } from '@material-ui/core'
+import { Grid, Card, CardMedia, CardContent} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({    
@@ -8,25 +8,37 @@ const useStyles = makeStyles({
     },
     cardMedia: {
         margin: 'auto'
+    },
+    cardContent: {
+        textAlign: 'center',
+        textTransform: 'capitalize'
     }
 });
 
 const imageUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon';
 
-function PokemonItem({ pokemon, index }) {
+function PokemonItem({ pokemon }) {
     const classes = useStyles();
+    const pokemonIndex = getPokemonIndex(pokemon.url);
+
+    function getPokemonIndex(url) {
+        let urlElements = url.split('/');
+        urlElements.pop();
+        return urlElements[urlElements.length-1];
+    }
+    
     return (
         <Grid item xs={3}>
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.cardMedia}
-                    image={imageUrl + `/${index + 1}.png`}
+                    image={imageUrl + `/${pokemonIndex}.png`}
                     style={{
                         width: '120px',
                         height: '120px',
                     }}
                 />
-                <CardContent>
+                <CardContent className={classes.cardContent}>
                     {pokemon.name}
                 </CardContent>
             </Card>
