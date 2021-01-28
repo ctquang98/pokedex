@@ -1,51 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { getPokemonList } from '../../api/api';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PokemonItem from './pokemonItem';
-import { Grid } from '@material-ui/core'
+import { fetchPokemonData } from '../../redux/actions/pokemonAction';
+import { Grid, CircularProgress, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     pokedexContainer: {
-        padding: '30px',
+        padding: '20px',
         backgroundColor: '#ffc77b',
-        marginTop: '10px'
+        width: '100%',
+        margin: 'auto'
+    },
+    cirularProgress: {
+        textAlign: 'center'
     }
 });
 
-function PokemonList() {
-    const [pokeList, setPokeList] = useState([]);
-    const classes = useStyles();
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const data = await getPokemonList();
-                if(Array.isArray(data) && data.length) {
-                    console.log(data);
-                    setPokeList(data);
-                }
-            }
-            catch(error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, []);
+function PokemonList() {
+    const pokemon = useSelector(state => state.pokemon);
+    const dispatch = useDispatch();
+    const classes = useStyles();
 
     function onRenderPokemon(pokemonList) {
         let result = null;
         if(Array.isArray(pokemonList) && pokemonList.length) {
             result = pokemonList.map((pokemon, index) => (
-                <PokemonItem pokemon={pokemon} key={index} index={index}/>
+                <PokemonItem pokemon={pokemon} key={index}/>
             ));
         }
         return result;
     }
 
+    function handleLoadmorePokemon() {
+        dispatch(fetchPokemonData(pokemon.limit, pokemon.offset))
+    }
+
     return (
         <div>
             <Grid container spacing={3} className={classes.pokedexContainer}>
-                {onRenderPokemon(pokeList)}
+                {!pokemon.pokemonList.length
+                 ? <Grid item xs={12} className={classes.cirularProgress}>
+                       Not Found
+                   </Grid>
+                 : onRenderPokemon(pokemon.pokemonList)
+                }
+                <Grid item xs={12} className={classes.cirularProgress}>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleLoadmorePokemon}
+                        disabled={pokemon.fetching ? true : false}
+                    >
+                        {pokemon.fetching ? <CircularProgress /> : null}
+                        Loadmore...
+                    </Button>
+                </Grid>
             </Grid>
         </div>
     );
