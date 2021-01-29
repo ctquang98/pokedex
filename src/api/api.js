@@ -11,3 +11,14 @@ export const getPokemonList = (limit, offset) => {
             .catch(err => reject(err));
     });
 }
+
+export const getPokemonDetail = pokemonId => {
+    return new Promise((resolve, reject) => {
+        api.get(`/pokemon/${pokemonId}`)
+            .then(res => {
+                const { data } = res;
+                resolve(data);
+            })
+            .catch(err => reject(err));
+    });
+}

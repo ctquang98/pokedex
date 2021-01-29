@@ -1,8 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, Card, CardMedia, CardContent} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({    
+const useStyles = makeStyles({
+    gridItem: {
+        textDecoration: 'none'
+    },
     card: {
         backgroundColor: '#cbecf1'
     },
@@ -28,7 +32,7 @@ function PokemonItem({ pokemon }) {
     }
     
     return (
-        <Grid item xs={3}>
+        <Grid item xs={3} component={Link} to={`/${pokemonIndex}`} className={classes.gridItem}>
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.cardMedia}

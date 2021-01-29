@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PokemonList from './components/pokemonList';
 import SearchBar from './components/searchBar';
 import SearchPage from './components/searchPage';
+import PokemonDetail from './components/pokemonDetail';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { fetchPokemonData } from './redux/actions/pokemonAction';
 
@@ -29,6 +30,9 @@ function App() {
               <SearchPage {...props}/>
             )}
           />
+          <Route path='/:pokemonId'>
+            <PokemonDetail />
+          </Route>
         </Switch>
       </div>
     </Router>
