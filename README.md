@@ -16,7 +16,7 @@ You will also see any lint errors in the console.
 
 ### Search
 
-![Alt text](./public/images/3.jpg)
+![Alt text](./public/images/3-2.jpg)
 
 ### Detail
 
